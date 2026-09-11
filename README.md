@@ -25,8 +25,6 @@ Le donazioni sostengono esclusivamente lo sviluppo e la manutenzione dell'adatta
 
 ## Installazione dal repository
 
-> **Nota:** Home Assistant deve poter leggere il repository. Se il repository GitHub e privato, rendilo pubblico oppure usa l'installazione locale descritta più sotto.
-
 1. Apri **Impostazioni → Add-on → Add-on Store** in Home Assistant.
 2. Apri il menu in alto a destra e scegli **Repository**.
 3. Aggiungi `https://github.com/andybegh/FoundryOnHAOS`.
@@ -35,7 +33,7 @@ Le donazioni sostengono esclusivamente lo sviluppo e la manutenzione dell'adatta
 
 ## Installazione locale su HAOS
 
-Se il repository rimane privato, copia la cartella `foundryvtt` di questo progetto in:
+ Copia la cartella `foundryvtt` di questo progetto in:
 
 ```text
 /addons/foundryvtt
