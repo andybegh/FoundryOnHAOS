@@ -1,8 +1,17 @@
 # Foundry VTT 14 su Home Assistant OS
 
-Add-on non ufficiale per eseguire Foundry Virtual Tabletop 14 su Home Assistant OS, usando l'immagine [`ghcr.io/felddy/foundryvtt:14`](https://github.com/felddy/foundryvtt-docker).
+> [!IMPORTANT]
+> **Add-on non ufficiale e non affiliato a Foundry Gaming LLC, al progetto `felddy/foundryvtt-docker` o a Home Assistant.**
+
+Questo progetto consente di eseguire Foundry Virtual Tabletop 14 su Home Assistant OS usando l'immagine [`ghcr.io/felddy/foundryvtt:14`](https://github.com/felddy/foundryvtt-docker).
 
 Questo progetto installa Foundry come add-on gestito dal Supervisor di Home Assistant. Non rimuove né sostituisce HAOS e non richiede di installare o gestire Docker manualmente sull'host.
+
+## Sostieni il progetto
+
+[![Sostieni FoundryOnHAOS su Buy Me a Coffee](https://img.buymeacoffee.com/button-api/?text=Supporta+il+progetto&emoji=%E2%98%95&slug=andybegh&button_colour=FFDD00&font_colour=000000&font_family=Lato&outline_colour=000000&coffee_colour=ffffff)](https://buymeacoffee.com/andybegh)
+
+Le donazioni sostengono esclusivamente lo sviluppo e la manutenzione dell'adattamento **FoundryOnHAOS**. Non costituiscono l'acquisto di Foundry Virtual Tabletop e non includono software Foundry, chiavi di licenza, accesso a server o servizi di hosting.
 
 ## Funzioni
 
@@ -122,3 +131,9 @@ Controlla i log dalla scheda **Log** dell'add-on.
 ## Avvertenze
 
 Questo add-on è sperimentale e non ufficiale. Richiede una licenza Foundry VTT valida. Esegui sempre un backup prima di aggiornare Foundry, l'add-on o Home Assistant OS.
+
+## Licenza e attribuzioni
+
+Il codice di questo adattamento HAOS è distribuito con licenza MIT. Il progetto usa l'immagine [`ghcr.io/felddy/foundryvtt:14`](https://github.com/felddy/foundryvtt-docker), il cui progetto originale è distribuito con licenza MIT e attribuito a Mark Feldhousen.
+
+Foundry Virtual Tabletop è software proprietario di Foundry Gaming LLC, non è incluso nella licenza MIT di questo repository e richiede una licenza Foundry valida. Consulta il file [`LICENSE`](LICENSE) per il testo completo, le attribuzioni e i termini applicabili.
