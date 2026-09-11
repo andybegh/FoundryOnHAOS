@@ -1,0 +1,124 @@
+# Foundry VTT 14 su Home Assistant OS
+
+Add-on non ufficiale per eseguire Foundry Virtual Tabletop 14 su Home Assistant OS, usando l'immagine [`ghcr.io/felddy/foundryvtt:14`](https://github.com/felddy/foundryvtt-docker).
+
+Questo progetto installa Foundry come add-on gestito dal Supervisor di Home Assistant. Non rimuove né sostituisce HAOS e non richiede di installare o gestire Docker manualmente sull'host.
+
+## Funzioni
+
+- dati persistenti di Foundry in `/config`;
+- cartelle HAOS `media` e `share` disponibili nel file picker di Foundry;
+- porta esterna modificabile dalla UI di Home Assistant;
+- cache persistente del pacchetto Foundry;
+- download forzato solo quando richiesto;
+- esecuzione di Foundry come utente `node` con UID/GID `1000:1000`;
+- configurazione e dati inclusi nei backup a freddo dell'add-on.
+
+## Installazione dal repository
+
+> **Nota:** Home Assistant deve poter leggere il repository. Se il repository GitHub e privato, rendilo pubblico oppure usa l'installazione locale descritta più sotto.
+
+1. Apri **Impostazioni → Add-on → Add-on Store** in Home Assistant.
+2. Apri il menu in alto a destra e scegli **Repository**.
+3. Aggiungi `https://github.com/andybegh/FoundryOnHAOS`.
+4. Aggiorna la pagina, apri **Foundry VTT HAOS** e seleziona **Installa**.
+5. Compila le opzioni dell'add-on e avvialo.
+
+## Installazione locale su HAOS
+
+Se il repository rimane privato, copia la cartella `foundryvtt` di questo progetto in:
+
+```text
+/addons/foundryvtt
+```
+
+Puoi trasferire i file con un add-on gestito da Home Assistant, per esempio Studio Code Server, Samba share o Terminal & SSH. Poi ricarica gli add-on locali dal menu dell'Add-on Store e installa **Foundry VTT HAOS**. Anche in questo caso il ciclo di vita resta interamente gestito da HAOS: non avviare container Docker manualmente.
+
+## Configurazione
+
+È necessario fornire uno dei due metodi di download:
+
+- `foundry_username` e `foundry_password`; oppure
+- `foundry_release_url`, usando un URL temporaneo per il pacchetto **Node.js** ottenuto dal sito Foundry VTT.
+
+Opzioni disponibili:
+
+| Opzione | Valore iniziale | Descrizione |
+| --- | --- | --- |
+| `foundry_username` | vuoto | Username o email dell'account Foundry VTT. |
+| `foundry_password` | vuoto | Password dell'account Foundry VTT. |
+| `foundry_release_url` | vuoto | URL temporaneo alternativo alle credenziali. |
+| `foundry_admin_key` | vuoto | Chiave di accesso alla schermata amministrativa. |
+| `foundry_license_key` | vuoto | Chiave licenza; può anche essere inserita dalla UI di Foundry. |
+| `foundry_telemetry` | `false` | Abilita o disabilita la telemetria Foundry. |
+| `container_preserve_config` | `true` | Non sovrascrive `Config/options.json` e `Config/admin.txt` se esistono. |
+| `force_download` | `false` | Elimina dalla cache il pacchetto della versione corrente e lo scarica di nuovo al prossimo avvio. |
+
+Non inserire credenziali o chiavi direttamente nei file del repository. Salvale esclusivamente nella scheda **Configurazione** dell'add-on.
+
+## Porta di rete
+
+Foundry ascolta sulla porta interna `30000`. Nella scheda **Configurazione → Rete** dell'add-on puoi cambiare la porta pubblicata sull'host senza modificare alcun file. Il pulsante **Apri interfaccia web** usa automaticamente la porta scelta.
+
+## Dati persistenti
+
+L'add-on usa `/config` come `dataPath` di Foundry. HAOS monta in quel percorso la cartella `addon_config` dedicata all'add-on. La struttura creata è:
+
+```text
+/config/
+├── Backups/
+├── Config/
+├── Data/
+│   └── assets/
+│       ├── haos-media -> /media
+│       └── haos-share -> /share
+├── Logs/
+└── container_cache/
+```
+
+Nel file picker di Foundry i contenuti condivisi sono disponibili in:
+
+```text
+Data/assets/haos-media
+Data/assets/haos-share
+```
+
+All'avvio, l'add-on assegna i file persistenti a UID/GID `1000:1000`, usati dall'utente `node` dell'immagine Foundry, e concede lettura/scrittura a proprietario e gruppo.
+
+## Cache e aggiornamenti
+
+Il pacchetto scaricato viene conservato in:
+
+```text
+/config/container_cache
+```
+
+Con `force_download: false`, se la cache contiene il pacchetto esatto richiesto dall'immagine `:14`, le credenziali e l'URL non vengono passati al downloader. In caso di nuova build Foundry 14, il primo avvio scarica una volta il pacchetto aggiornato e lo conserva; i riavvii successivi usano la cache.
+
+Per riscaricare intenzionalmente la versione corrente:
+
+1. imposta `force_download: true`;
+2. riavvia l'add-on e attendi il completamento del download;
+3. reimposta `force_download: false`.
+
+Se usi `foundry_release_url`, genera un nuovo URL temporaneo prima di forzare il download.
+
+## Aggiornamento dell'add-on
+
+Dopo un aggiornamento del repository, usa il pulsante **Aggiorna** nella pagina dell'add-on. Se hai installato la cartella come add-on locale, sostituisci i file, ricarica gli add-on locali e scegli **Aggiorna**. Home Assistant può richiedere una nuova compilazione dell'immagine.
+
+Prima di aggiornare, crea un backup dell'add-on. I dati persistenti si trovano nell'`addon_config` assegnato da HAOS; il prefisso della cartella dipende dal metodo di installazione e dal repository.
+
+## Log e problemi comuni
+
+Controlla i log dalla scheda **Log** dell'add-on.
+
+- **Cache assente:** configura credenziali oppure un URL temporaneo valido.
+- **URL scaduto:** genera un nuovo URL Node.js e salvalo nelle opzioni.
+- **Permessi:** l'avvio riallinea automaticamente `/config` a `1000:1000`.
+- **Link `haos-media` o `haos-share` già esistente come cartella:** per sicurezza l'add-on non lo sovrascrive; rinomina la cartella e riavvia per creare il link.
+- **Porta occupata:** cambia la porta pubblicata nella sezione **Rete** dell'add-on.
+
+## Avvertenze
+
+Questo add-on è sperimentale e non ufficiale. Richiede una licenza Foundry VTT valida. Esegui sempre un backup prima di aggiornare Foundry, l'add-on o Home Assistant OS.
