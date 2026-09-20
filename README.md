@@ -25,6 +25,10 @@ Le donazioni sostengono esclusivamente lo sviluppo e la manutenzione dell'adatta
 
 ## Installazione dal repository
 
+[![Aggiungi il repository a Home Assistant](https://my.home-assistant.io/badges/supervisor_add_addon_repository.svg)](https://my.home-assistant.io/redirect/supervisor_add_addon_repository/?repository_url=https%3A%2F%2Fgithub.com%2Fandybegh%2FFoundryOnHAOS)
+
+Seleziona il pulsante qui sopra per aprire il tuo Home Assistant e aggiungere automaticamente il repository. In alternativa:
+
 1. Apri **Impostazioni → Add-on → Add-on Store** in Home Assistant.
 2. Apri il menu in alto a destra e scegli **Repository**.
 3. Aggiungi `https://github.com/andybegh/FoundryOnHAOS`.

@@ -1,5 +1,5 @@
 name: Foundry VTT HAOS
-version: "1.0.10"
+version: "1.0.11"
 slug: foundryvtt_haos
 description: Foundry Virtual Tabletop 14 per Home Assistant OS
 url: https://github.com/andybegh/FoundryOnHAOS
