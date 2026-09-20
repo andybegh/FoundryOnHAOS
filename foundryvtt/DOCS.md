@@ -28,7 +28,8 @@ Il percorso dati è `/config`, collegato da HAOS all'`addon_config` dell'add-on:
 │       ├── haos-media -> /media
 │       └── haos-share -> /share
 ├── Logs/
-└── container_cache/
+├── container_cache/
+└── foundry_app/
 ```
 
 All'avvio i file ricevono proprietario e gruppo `1000:1000`, usati dall'utente `node` dell'immagine Foundry.
@@ -42,6 +43,19 @@ Con `force_download: false`, i riavvii usano il pacchetto conservato in `/config
 3. reimposta `force_download: false`.
 
 Se utilizzi `foundry_release_url`, genera un nuovo URL temporaneo prima di forzare il download.
+
+## Aggiornamenti dalla UI di Foundry
+
+L'add-on lascia attiva la schermata **Aggiornamento software** di Foundry e
+conserva l'applicazione in `/config/foundry_app`. Un aggiornamento installato
+dalla UI resta quindi disponibile dopo il riavvio dell'add-on.
+
+Prima di procedere crea un backup completo e arresta i mondi attivi. Aggiorna
+soltanto all'interno della generazione 14; per una nuova generazione attendi una
+versione dell'add-on basata sull'immagine `felddy` compatibile.
+
+L'opzione `force_download: true` rimuove l'applicazione persistente e reinstalla
+la versione fornita dall'immagine. Dopo il riavvio riportala a `false`.
 
 ## Cartelle condivise
 

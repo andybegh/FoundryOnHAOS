@@ -10,6 +10,7 @@ Esegue Foundry Virtual Tabletop 14 come add-on gestito da Home Assistant OS usan
 
 - dati persistenti in `/config`;
 - cache persistente del pacchetto Foundry;
+- aggiornamenti software installabili dalla UI di Foundry e persistenti;
 - cartelle HAOS `media` e `share` disponibili in `Data/assets`;
 - porta esterna configurabile dalla UI di Home Assistant;
 - download forzato soltanto quando richiesto;

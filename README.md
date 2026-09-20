@@ -19,6 +19,7 @@ Le donazioni sostengono esclusivamente lo sviluppo e la manutenzione dell'adatta
 - cartelle HAOS `media` e `share` disponibili nel file picker di Foundry;
 - porta esterna modificabile dalla UI di Home Assistant;
 - cache persistente del pacchetto Foundry;
+- aggiornamenti di Foundry installabili dalla sua interfaccia web e conservati ai riavvii;
 - download forzato solo quando richiesto;
 - esecuzione di Foundry come utente `node` con UID/GID `1000:1000`;
 - configurazione e dati inclusi nei backup a freddo dell'add-on.
@@ -84,7 +85,8 @@ L'add-on usa `/config` come `dataPath` di Foundry. HAOS monta in quel percorso l
 │       ├── haos-media -> /media
 │       └── haos-share -> /share
 ├── Logs/
-└── container_cache/
+├── container_cache/
+└── foundry_app/
 ```
 
 Nel file picker di Foundry i contenuti condivisi sono disponibili in:
@@ -96,7 +98,7 @@ Data/assets/haos-share
 
 All'avvio, l'add-on assegna i file persistenti a UID/GID `1000:1000`, usati dall'utente `node` dell'immagine Foundry, e concede lettura/scrittura a proprietario e gruppo.
 
-## Cache e aggiornamenti
+## Cache e aggiornamenti di Foundry
 
 Il pacchetto scaricato viene conservato in:
 
@@ -106,6 +108,17 @@ Il pacchetto scaricato viene conservato in:
 
 Con `force_download: false`, se la cache contiene il pacchetto esatto richiesto dall'immagine `:14`, le credenziali e l'URL non vengono passati al downloader. In caso di nuova build Foundry 14, il primo avvio scarica una volta il pacchetto aggiornato e lo conserva; i riavvii successivi usano la cache.
 
+L'installazione applicativa si trova in `/config/foundry_app`. L'add-on non usa
+`--noupdate`: dalla schermata **Aggiornamento software** di Foundry puoi quindi
+scaricare e installare un aggiornamento, che resta disponibile anche dopo il
+riavvio dell'add-on.
+
+Prima di aggiornare crea un backup completo dell'add-on e arresta i mondi attivi.
+Installa dalla UI soltanto aggiornamenti compatibili con la generazione 14: per
+passare a una nuova generazione serve una versione dell'add-on basata sulla
+corrispondente immagine `felddy`, perché possono cambiare Node.js e le dipendenze
+di sistema.
+
 Per riscaricare intenzionalmente la versione corrente:
 
 1. imposta `force_download: true`;
@@ -113,6 +126,10 @@ Per riscaricare intenzionalmente la versione corrente:
 3. reimposta `force_download: false`.
 
 Se usi `foundry_release_url`, genera un nuovo URL temporaneo prima di forzare il download.
+
+`force_download: true` elimina anche l'installazione applicativa persistente e
+ripristina la versione prevista dall'immagine dell'add-on. Usalo quindi come
+procedura di recupero o reinstallazione intenzionale, non per un normale riavvio.
 
 ## Aggiornamento dell'add-on
 
